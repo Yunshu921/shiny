@@ -43,6 +43,13 @@ data <- read.csv("originaldata.csv")
 In the @fig-1, we can found that the number of victims who has religion Catholic is larger than that of religion Jewish. Usually we think the Holocaust killed Jewish most, but this graph shows a different thing. Thus we can infer some reasons behind this fact.
 And this finding shows the crudity of the Holocaust indirectly.
 
+Firstly, one of reasons is a lack of empathy and awareness of human connection. Secondly, persecution may begin with small-scale, targeted crimes, but if harassment is allowed to continue, it can intensify until it becomes uncontrollable. The morals and sympathy of those executing the atrocities gradually diminish throughout this process. The effect that follows is disastrous.
+
+Lastly, just like as Bouie said [@2022], Even though there are not many monuments honoring the victims of Auschwitz and there is not enough information available about their experiences, every single one of them was a live, breathing person, just like the people we honor with statues.
+
+It is imperative that we keep the truth of their innate humanity at the center of what we do, even as we learn new facts and apply innovative techniques. To avoid repeating the dehumanization that took place inside the walls of the concentration camp, we must approach their history with consciousness, empathy, and reverence.
+
+
 ```{r}
 #| label: fig-1
 #| fig-cap: The number of victims for each religion

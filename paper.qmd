@@ -1,0 +1,70 @@
+---
+title: "Discussion About Shiny Application"
+author: "Yunshu Zhang"
+format: pdf
+thanks: "Code and data are available at: https://github.com/Yunshu921/shiny.git. The app is available at: https://posit.cloud/content/7924192."
+date: today
+date-format: long
+editor: visual
+toc: TRUE
+number-sections: true
+bibliography: references.bib
+---
+# Background
+
+The ideas discussed in Bouie [@2022] state that we should identify ethical issues while dealing with the quantitative analysis of human atrocity. Something has to be present during the quantification process that we disregard. Put another way, there is never a flawless data set that is complete, regardless of how precise and comprehensive the set is. As a result, we aim to achieve the stated objective: resolve some moral issues.
+
+During World War II and the Holocaust, Auschwitz concentration camp was a major place of the Nazis' Final Solution to the Jewish problem [@Wiki].
+
+# Application Findings
+
+I use `shiny` [@citeshiny] to make a interactive graph and table. See details of my app at: https://posit.cloud/content/7924192. These show the number of victims murdered by religion and  the user is allowed to specify the religions they are interested in seeing data for.
+
+What's more, I use `ggplot2` function to make @fig-1 to show the number of victims for each religion. 
+
+
+
+
+
+
+
+```{r setup, include=FALSE}
+# Load libraries
+library(shiny)
+library(dplyr)
+library(ggplot2)
+
+setwd("/cloud/project")
+
+
+# Read data
+data <- read.csv("originaldata.csv")
+```
+In the @fig-1, we can found that the number of victims who has religion Catholic is larger than that of religion Jewish. Usually we think the Holocaust killed Jewish most, but this graph shows a different thing. Thus we can infer some reasons behind this fact.
+And this finding shows the crudity of the Holocaust indirectly.
+
+```{r}
+#| label: fig-1
+#| fig-cap: The number of victims for each religion
+#| echo: false
+#| warning: false
+
+#Count number of victims by religion
+victim_counts <- table(data$Religion)
+#Convert the counts to a data frame
+victim_counts_df <- data.frame(Religion = names(victim_counts), Count = as.numeric(victim_counts))
+#Create a grap using ggplot2
+
+ggplot(victim_counts_df, aes(x = Religion, y = Count)) +
+  geom_col(fill = "skyblue", color = "black") +
+  labs(title = "Holocaust Victims by Religion",
+       x = "Religion",
+       y = "Number of Victims") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  coord_flip()
+
+
+
+```
+
+

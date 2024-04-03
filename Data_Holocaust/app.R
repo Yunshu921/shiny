@@ -1,49 +1,63 @@
 
 # Load libraries
 library(shiny)
+library(dplyr)
+library(ggplot2)
 
-# Read data
-victim_data <- read.csv("Auschwitz_Death_Certificates_1942-1943 - Auschwitz.csv")
-
-
-# Define UI for application that draws a histogram
+# Define UI for application
 ui <- fluidPage(
-
-    # Application title
-    titlePanel("Distribution for Holocaust victims killed at Auschwitz 
-               concentration camp"),
-
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
-        )
+  
+  # Application title
+  titlePanel("Holocaust Victims by Religion"),
+  
+  # Sidebar layout with input and output definitions
+  sidebarLayout(
+    
+    # Sidebar panel for inputs
+    sidebarPanel(
+      # Checkbox group input for selecting religions
+      checkboxGroupInput("religions", "Select Religions",
+                         choices = c("Agnostic", "andere", "Atheist", "Believes in God", "Buddhist", "Catholic", 
+                                     "Czech-Moravian", "Eastern Orthodox", "Greek Catholic", "Greek Orthodox", 
+                                     "Hussite", "Jehovah's Witness", "Jew", "Muslim", "Protestant", 
+                                     "Russian Orthodox", "Unaffiliated", "Unknown"),
+                         selected = "Jew")
+    ),
+    
+    # Main panel for displaying the graph and table
+    mainPanel(
+      # Output: Interactive plot
+      plotOutput("plot"),
+      
     )
+  )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output) {
-
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white',
-             xlab = 'The nationality of the victim',
-             main = 'Histogram of victims')
-    })
+  
+  # Read data
+  data <- read.csv("input_data.csv")
+  
+  # Define a reactive expression to filter data based on selected religions
+  filtered_data <- reactive({
+    filter(data, Religion %in% input$religions)
+  })
+  
+  # Render the interactive plot
+  output$plot <- renderPlot({
+    ggplot(filtered_data(), aes(x = Religion)) +
+      geom_bar() +
+      labs(title = "Holocaust Victims by Religion",
+           x = "Religion",
+           y = "Number of Victims")
+  })
+  
+  # Render the interactive table
+  output$table <- renderTable({
+    filtered_data()
+  })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
